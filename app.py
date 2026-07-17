@@ -20,6 +20,13 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__)
 app.secret_key = 'SIB1214'
 
+# 인코딩 에러 조심하기.
+# with open("message.json", "r") as f:
+#     msg = json.load(f)
+
+with open("message.json", "r", encoding="UTF-8") as f:
+    msg = json.load(f)
+
 
 # 로그인 페이지
 @app.route('/')
@@ -47,17 +54,12 @@ def login():
         session["pw"] = info_data['pw']
         return redirect(url_for('dashboard'))
     elif not (info_data["id"] is None and info_data["pw"] is None):
-        info_data["fail"] = "아이디 또는 비밀번호가 맞지 않습니다."
+        info_data["fail"] = msg.get("fail_login")
         if info_data["id"] == "" or info_data["pw"] == "":
             print(info_data["id"], info_data["pw"])
-            info_data["fail"] = "아이디 또는 비밀번호를 입력하세요"
+            info_data["fail"] = msg.get("void_login")
 
-    with open("message.json", "r") as f:
-        msg = json.load(f)
-
-    print(msg["message"])
-
-    return (render_template('login.html', info=info_data))
+    return render_template('login.html', info=info_data)
 
 
 @app.route('/dashboard')
@@ -90,7 +92,7 @@ def get_data():
             "sec_json": sec_dict  # { "123": "title1", "345": "title2" }
         })
     else:
-        return jsonify({"message": "[오류] 링크를 형식에 맞춰 적어주세요."})
+        return jsonify({"message": msg.get("err_link")})
 
 
 @app.route('/attack', methods=['POST', 'GET'])
@@ -118,17 +120,21 @@ def start_attack():
         SIB.set_wall_id(int(MAIN_ID))
         for i in SECTION_ID:
             SIB.set_wall_sec(int(i))
-            for msg in SIB.start():
-                print(f"실시간 전송 상황: {msg}")
+            for mss in SIB.start():
+                print(f"실시간 전송 상황: {mss}")
 
     else :
-        return jsonify({"message" : "[오류] 정확한 값을 입력해주세요"})
+        return jsonify({"message" : msg.get("err_quantity")})
 
-    return jsonify({"message" : "[SIB] 공격 성공"})
+    return jsonify({"message" : msg.get("success_attack")})
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     session.clear()
     return redirect(url_for('login'))
+
+@app.route('/get_message', methods=['GET', 'POST'])
+def get_message():
+    return jsonify(msg)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080, host='0.0.0.0')

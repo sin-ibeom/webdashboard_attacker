@@ -1,5 +1,16 @@
 {
 
-  "message" : "test"
+  "message" : "test",
+  "fail_login" : "아이디 또는 비밀번호가 맞지 않습니다.",
+  "void_login" : "아이디 또는 비밀번호를 입력해 주세요.",
+  "err_link" : "링크를 형식에 맞춰서 입력해주세요.",
+  "err_quantity" : "[오류] 정확한 값을 입력해주세요",
+  "success_attack" : "[SIB] 공격 성공",
+  "start_sign" : "[Server] 시작 요청 보내는 중",
+  "loading_link" : "[Client] Padlet 링크 불러오는 중...",
+  "connecting_server" : "[Server] Padlet 서버에 연결하는 중...",
+  "connect_server" : "[Server] 서버 연결 성공",
+  "detect_sec" : "[Log] 섹션 감지: ",
+  "error" : "[Error] 예상 못한 오류가 발생했습니다."
 
 }

@@ -94,7 +94,7 @@
         <label class="block text-sm font-semibold text-slate-600 mb-2">Output (실행 결과)</label>
         <div class="output_log w-full h-32 bg-blue-50/30 border border-blue-100 rounded-xl p-4 font-mono text-sm text-blue-900 overflow-y-auto leading-relaxed">
           <p>&gt; 시스템 준비 완료...</p>
-          <p class="text-slate-400">&gt; ID 입력을 기다리는 중입니다.</p>
+          <p class="text-slate-400">&gt; URL 입력을 기다리는 중입니다.</p>
         </div>
       </div>
 
@@ -105,6 +105,19 @@
 
 
 <script>
+    // fetch는 뭐만하면 쓰네
+    let MESSAGE = {}
+
+    fetch("/get_message")
+        .then(response => response.json())
+        .then(data => {
+            MESSAGE = data;
+        })
+
+
+
+
+
   // 고난이 예상되는 기능 - 11시 start
   // 걍 변수 이름 막 짓는 중 과거의 나한테 처 맞을듯~
 
@@ -177,7 +190,7 @@
       document.querySelector(".start-btn-v").disabled = true;
       let bb = {"quantity" : qu};
       let total = {...aa, ...bb};
-      outputcorr("시작 요청 보내는 중...");
+      outputcorr(MESSAGE["start_sign"]);
       fetch('/attack', {
                       method: 'POST',
                       headers: {
@@ -217,13 +230,13 @@
       let url = document.querySelector(".wall-id").value;
       let wall_url = { "url" : url};
 
-      output("Padlet 링크 불러오는 중...");
+      output(MESSAGE["loading_link"]);
 
       // 정규식에 맞으면 ㄱ.
       if (regex.test(wall_url.url)){
           document.querySelector(".search-btn").disabled = true;
           outputcorr(`${wall_url.url}`);
-          output("Padlet 서버에 연결하는 중...");
+          output(MESSAGE["connecting_server"]);
 
           console.log("innertext : " + url);
 
@@ -241,14 +254,14 @@
                   return;
               }
 
-              outputcorr("[Server] 서버 연결 성공");
+              outputcorr(MESSAGE["connect_server"]);
               output(`[Log] ${data.wall_hashid}`);
               output(`[Log] ${data.wall_id}`);
 
               const secData = data.sec_json;
 
               Object.entries(secData).forEach(([secId, secTitle]) => {
-                  output(`[Log] 섹션 감지: ${secTitle} (${secId})`);
+                  output(`${MESSAGE["detect_sec"]}${secTitle} (${secId})`);
 
                   inp.innerHTML += `
                       <label class="flex items-center gap-3 p-2 hover:bg-blue-50/50 rounded-lg cursor-pointer transition">
@@ -260,7 +273,7 @@
           })
           .catch(error => {
               console.log(error);
-              outputerr("[SIB] 예상 못한 오류가 발생했습니다.");
+              outputerr(MESSAGE["error"]);
           })
           .finally(()=>{
               document.querySelector(".search-btn").disabled = false;
@@ -268,7 +281,7 @@
           });
       }
       else {
-          outputerr("[오류] 링크가 형식에 맞지 않습니다.");
+          outputerr(MESSAGE["err_link"]);
       }
   });
 
