@@ -2,16 +2,16 @@ import os
 
 import requests
 import random
+import dotenv
 
 from app import QUANTITY
 
 
 class SIB:
-    message = os.environ.get("TOKEN")
     url = "https://padlet.com/api/3/wishes"
     __QUANTITY = 0
     __HEADERS = {
-        "authorization": "TOKEN",
+        "authorization": os.environ.get("TOKEN"),
     }
     __DATA = {
         "sort_index": "3838739544064",
@@ -77,7 +77,7 @@ class SIB:
 SIB.add_attachment(
     "https://static.wikia.nocookie.net/joke-battles/images/d/d4/What-is-a-computer-virus-"
     "a82f9491ad3644b89446d45233b57761.jpg/revision/latest?cb=20201129021158")
-# SIB.set_quantity(20)
-# SIB.set_wall_id(267316514)
-# SIB.set_wall_sec(379179453)
-# SIB.start()
+SIB.set_quantity(5)
+SIB.set_wall_id(267316514)
+SIB.set_wall_sec(379179453)
+SIB.start()
