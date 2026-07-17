@@ -52,6 +52,11 @@ def login():
             print(info_data["id"], info_data["pw"])
             info_data["fail"] = "아이디 또는 비밀번호를 입력하세요"
 
+    with open("message.json", "r") as f:
+        msg = json.load(f)
+
+    print(msg["message"])
+
     return (render_template('login.html', info=info_data))
 
 

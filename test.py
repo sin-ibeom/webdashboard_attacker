@@ -3,14 +3,11 @@ import requests
 
 
 def run_search_test(wall_id):
-    # 환경 변수에 TOKEN이 설정되어 있어야 합니다.
-    # 테스트 목적이라면 'YOUR_ACTUAL_TOKEN_HERE'에 실제 API 토큰을 입력하세요.
     headers = {
-        "Authorization": os.environ.get('TOKEN', 'YOUR_ACTUAL_TOKEN_HERE'),
+        "Authorization": os.environ.get('TOKEN', '0'),
         "Accept": "application/vnd.api+json",
     }
 
-    # 💡 핵심: 포스트 조회(wishes) 대신, 게시판 고유 ID(숫자)를 이용해 섹션 목록 전체를 다이렉트로 조회합니다.
     url = f"https://padlet.com/api/5/wall_sections?wall_id={wall_id}"
     print(f"[요청 URL] {url}")
 
@@ -23,17 +20,14 @@ def run_search_test(wall_id):
 
     data = response.json()
 
-    # API 응답 구조를 파싱하여 { "섹션ID": "섹션이름" } 매핑
     detected_sections = {}
 
-    # JSON:API 표준 구조 ('data' 배열 순회)
     sections_data = data.get("data", [])
 
     for item in sections_data:
         sec_id = str(item.get("id"))
         sec_attributes = item.get("attributes", {})
 
-        # 'title' 또는 'name' 값 추출
         sec_title = (
                 sec_attributes.get("title") or
                 sec_attributes.get("name") or
@@ -53,8 +47,6 @@ def run_search_test(wall_id):
 
 
 if __name__ == "__main__":
-    # 💡 주의: 이 API는 wall_hashid("board_xxx")가 아닌, 메인 숫자 ID("267289200")를 매개변수로 받습니다.
-    # 전송해주신 JSON 데이터 상의 wall_id 값인 '267289200'을 대입해 보세요.
     TEST_WALL_ID = "267289200"
 
     run_search_test(TEST_WALL_ID)
