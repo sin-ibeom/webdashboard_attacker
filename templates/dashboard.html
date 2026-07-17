@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <style>
+    .start-btn:hover{
+      cursor : pointer;
+    }
+    .search-btn {
+      cursor : pointer;
+    }
+  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <script type="module" crossorigin src="{{ url_for('static', filename='dashboard/assets/2.js') }}"></script>
+  <link rel="stylesheet" crossorigin href="{{ url_for('static', filename='dashboard/assets/index-yGgP3z9Z.css') }}">
+</head>
+<body class="bg-blue-50/50 text-slate-800 min-h-screen">
+
+<div class="w-screen min-h-[90vh] flex flex-col justify-start gap-8 p-6">
+
+  <div class="w-full h-24 bg-white rounded-2xl border border-blue-100 p-4 flex items-center justify-between shadow-sm">
+    <h2 class="text-xl font-bold text-blue-600">패들렛 대시보드</h2>
+
+    <div class="relative">
+      <button
+              id="profileBtn"
+              class="w-12 h-12 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center font-bold text-white shadow-md transition cursor-pointer"
+      >
+        User
+      </button>
+
+      <div
+              id="logoutDropdown"
+              class="hidden absolute right-0 mt-2 w-40 bg-white border border-blue-100 rounded-xl shadow-lg py-1 z-50 transition-all duration-200"
+      >
+        <button
+                id="logoutBtn"
+                class="w-full text-left px-4 py-2.5 text-sm text-blue-600 font-semibold hover:bg-blue-50 transition cursor-pointer"
+        >
+          로그아웃
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-full flex justify-center">
+
+    <div class="w-full max-w-4xl bg-white rounded-3xl border border-blue-100 p-8 shadow-xl shadow-blue-100/40">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+
+        <div class="space-y-6">
+          <div>
+            <label class="block text-sm font-semibold text-slate-600 mb-2">Padlet Link</label>
+            <input
+                    type="text"
+                    placeholder="https://padlet.com//..."
+                    class="wall-id w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-slate-600 mb-2">개수 설정</label>
+            <input
+                    type="number"
+                    pattern="\d*"
+                    min="1"
+                    max="50"
+                    placeholder="1~50 정수만 입력하세요."
+                    class="qu w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+            />
+          </div>
+
+          <div class="flex gap-4 pt-2">
+            <button class="start-btn-v start-btn flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-200 transition transform active:scale-95">
+              시작
+            </button>
+            <button class="search-btn flex-1 bg-white border border-blue-200 text-blue-600 hover:bg-blue-50 font-bold py-3.5 rounded-xl shadow-md transition transform active:scale-95">
+              검색
+            </button>
+          </div>
+        </div>
+
+        <div class="flex flex-col h-full">
+          <label class="block text-sm font-semibold text-slate-600 mb-2">섹션 선택</label>
+          <div class="list_sec flex-1 min-h-[190px] bg-slate-50 border border-slate-200 rounded-xl p-3 overflow-y-auto space-y-2">
+          </div>
+        </div>
+
+      </div>
+
+      <div class="border-t border-slate-100 pt-6">
+        <label class="block text-sm font-semibold text-slate-600 mb-2">Output (실행 결과)</label>
+        <div class="output_log w-full h-32 bg-blue-50/30 border border-blue-100 rounded-xl p-4 font-mono text-sm text-blue-900 overflow-y-auto leading-relaxed">
+          <p>&gt; 시스템 준비 완료...</p>
+          <p class="text-slate-400">&gt; ID 입력을 기다리는 중입니다.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+<script>
+  // 고난이 예상되는 기능 - 11시 start
+  // 걍 변수 이름 막 짓는 중 과거의 나한테 처 맞을듯~
+
+  // 5분 지났는데 까먹음
+
+  let inp = document.querySelector(".list_sec");
+  let wait = "";
+
+
+
+
+  // document.querySelector("html").addEventListener("keydown", function (e){
+  //   if(e.key == "F12"){
+  //     e.preventDefault();
+  //     alert("오류를 방지를 위해 개발자 콘솔을 막아놨습니다")
+  //   }
+  // })
+  //
+  // document.querySelector("html").addEventListener("contextmenu", function (e){
+  //   e.preventDefault();
+  // })
+
+  // 스크롤 하단 고정 - GEMINI
+  function scrollToBottom() {
+    const logBox = document.querySelector(".output_log");
+    logBox.scrollTop = logBox.scrollHeight;
+  }
+
+  scrollToBottom();
+
+
+  const profileBtn = document.getElementById('profileBtn');
+  const logoutDropdown = document.getElementById('logoutDropdown');
+
+  profileBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    logoutDropdown.classList.toggle('hidden');
+  });
+
+  document.addEventListener('click', () => {
+    logoutDropdown.classList.add('hidden');
+  });
+
+  // 로그아웃 버튼 클릭 이벤트
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    window.location.href = "login"
+    fetch('/logout', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      }
+                  })
+  });
+
+  document.querySelector('.start-btn').addEventListener('click', function() {
+  // 인풋 태그면서 이름은 ch + 체크 되어있는 !
+    const checkboxes = document.querySelectorAll('input[name="ch"]:checked');
+
+    let result = [];
+    for(let box of checkboxes){
+      result.push(box.value);
+    }
+
+    let aa = { "Sec111" : result };
+
+
+    let qu = document.querySelector(".qu").value;
+    if(!isNaN(qu)){
+      document.querySelector(".start-btn-v").classList.remove("start-btn")
+      document.querySelector(".start-btn-v").disabled = true;
+      let bb = {"quantity" : qu};
+      let total = {...aa, ...bb};
+      outputcorr("시작 요청 보내는 중...");
+      fetch('/attack', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify(total)
+                  })
+      .then(response => response.json())
+      .then(data => {
+        outputerr(data.message);
+      })
+      .finally(() => {
+            document.querySelector(".start-btn-v").disabled = false;
+            document.querySelector(".start-btn-v").classList.add("start-btn");
+      })
+
+    } else {
+              outputerr("F12를 사용하여 우회하지 마세요.");
+              outputerr("F12를 사용하여 우회하지 마세요.");
+              outputerr("F12를 사용하여 우회하지 마세요.");
+              outputerr("F12를 사용하여 우회하지 마세요.");
+              outputerr("F12를 사용하여 우회하지 마세요.");
+              outputerr("F12를 사용하여 우회하지 마세요.");
+              outputerr("F12를 사용하여 우회하지 마세요.");
+            }
+
+  });
+
+  document.querySelector('.search-btn').addEventListener('click', function() {
+
+      // 검색 계속 누르면 목록 계속 생기는거 방지
+      inp.innerHTML = ``;
+
+      // 머이리 복잡함 ~ 정규식임
+      const regex = /^https:\/\/padlet\.com\/[\w-]+\/[\w-]+$/;
+
+      let url = document.querySelector(".wall-id").value;
+      let wall_url = { "url" : url};
+
+      output("Padlet 링크 불러오는 중...");
+
+      // 정규식에 맞으면 ㄱ.
+      if (regex.test(wall_url.url)){
+          document.querySelector(".search-btn").disabled = true;
+          outputcorr(`${wall_url.url}`);
+          output("Padlet 서버에 연결하는 중...");
+
+          console.log("innertext : " + url);
+
+          fetch('/get_data', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(wall_url)
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.message) {
+                  outputerr(data.message);
+                  return;
+              }
+
+              outputcorr("[Server] 서버 연결 성공");
+              output(`[Log] ${data.wall_hashid}`);
+              output(`[Log] ${data.wall_id}`);
+
+              const secData = data.sec_json;
+
+              Object.entries(secData).forEach(([secId, secTitle]) => {
+                  output(`[Log] 섹션 감지: ${secTitle} (${secId})`);
+
+                  inp.innerHTML += `
+                      <label class="flex items-center gap-3 p-2 hover:bg-blue-50/50 rounded-lg cursor-pointer transition">
+                          <input name="ch" value="${secId}" type="checkbox" class="w-4 h-4 rounded text-blue-600 bg-white border-slate-300 focus:ring-blue-500">
+                          <span class="text-sm text-slate-700">${secTitle}</span>
+                      </label>
+                  `;
+              });
+          })
+          .catch(error => {
+              console.log(error);
+              outputerr("[SIB] 예상 못한 오류가 발생했습니다.");
+          })
+          .finally(()=>{
+              document.querySelector(".search-btn").disabled = false;
+
+          });
+      }
+      else {
+          outputerr("[오류] 링크가 형식에 맞지 않습니다.");
+      }
+  });
+
+  function output(str){
+    document.querySelector(".output_log").innerHTML += `<p>${str}</p>`;
+    scrollToBottom();
+
+  }
+
+  function outputerr(str){
+    document.querySelector(".output_log").innerHTML += `<p style="color : red">${str}</p>`;
+    scrollToBottom();
+
+  }
+
+  function outputwarr(str){
+    document.querySelector(".output_log").innerHTML += `<p style="color : yellow">${str}</p>`;
+    scrollToBottom();
+
+  }
+
+  function outputcorr(str){
+    document.querySelector(".output_log").innerHTML += `<p style="color : green">${str}</p>`;
+    scrollToBottom();
+
+  }
+</script>
+</body>
+</html>

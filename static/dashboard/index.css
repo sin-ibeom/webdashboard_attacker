@@ -1,0 +1,42 @@
+div {
+    border : 1px solid red;
+}
+
+.wrapper {
+    width: 100vw;
+    height: 90vh;
+
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap : 10vh;
+}
+
+.login_status {
+    border : 1px solid green;
+    width: 100vw;
+    height: 16vh;
+    display: inline-block;
+}
+
+.profile {
+    border : 1px solid aqua;
+    width: 24vw;
+    height: 16vh;
+}
+
+.main_status {
+    border : 1px solid blue;
+    width: 100vw;
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+
+}
+
+
+.main_item {
+    width: 80vw;
+    border : 1px solid black;
+
+}
