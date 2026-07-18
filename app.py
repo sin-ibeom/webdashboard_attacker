@@ -1,5 +1,5 @@
 import os
-
+import pymysql
 from Tools.scripts.fixcid import Number
 from flask import Flask, render_template, request, session, url_for, redirect, jsonify
 
@@ -18,7 +18,7 @@ QUANTITY = 0
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__)
-app.secret_key = 'SIB1214'
+app.secret_key = os.environ.get("SECRET_KEY")
 
 # 인코딩 에러 조심하기.
 # with open("message.json", "r") as f:
@@ -36,20 +36,29 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if session.get("id") == "admin" and session.get("pw") == "1214":
+    db = pymysql.connect(host="localhost", user="root", passwd=os.environ.get("DB_PW"), db="user")
+    cursor = db.cursor()
+    sql = "select * from account WHERE NAME = %s and PASSWORD = %s"
+    cursor.execute(sql, (session.get("id"), session.get("pw")))
+    _l = cursor.fetchone()
+
+    # 로그인 한적이 있는지 검증
+    if _l:
         return redirect(url_for('dashboard'))
 
 
     info_data = {
         "id": request.form.get('id'),
-        "pw": request.form.get('pw'),
+        "pw": request.form.get('pw')
     }
 
     if request.method == 'POST':
         info_data['id'] = request.form.get("id")
         info_data['pw'] = request.form.get("pw")
 
-    if (info_data['id'] == "admin" and info_data['pw'] == "1214") or (session.get("id") == "admin" and session.get("pw") == "1214"):
+    _lo = cursor.execute(sql, (info_data['id'], info_data['pw']))
+    # 튜플로 -> (ID, NAME(ID), PW, RANK)
+    if _lo:
         session["id"] = info_data['id']
         session["pw"] = info_data['pw']
         return redirect(url_for('dashboard'))
@@ -64,8 +73,11 @@ def login():
 
 @app.route('/dashboard')
 def dashboard():
-    if session.get("id") == "admin" and session.get("pw") == "1214":
-        print(session["id"])
+    db = pymysql.connect(host="localhost", user="root", passwd=os.environ.get("DB_PW"), db="user")
+    cursor = db.cursor()
+    sql = "select * from account WHERE NAME = %s and PASSWORD = %s"
+
+    if cursor.execute(sql, (session.get("id"), session.get("pw"))):
         return render_template('dashboard.html')
     else:
         return redirect(url_for('login'))
