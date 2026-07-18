@@ -74,10 +74,10 @@ class SIB:
             yield message
 
 
-SIB.add_attachment(
-    "https://static.wikia.nocookie.net/joke-battles/images/d/d4/What-is-a-computer-virus-"
-    "a82f9491ad3644b89446d45233b57761.jpg/revision/latest?cb=20201129021158")
-SIB.set_quantity(5)
-SIB.set_wall_id(267316514)
-SIB.set_wall_sec(379179453)
-SIB.start()
+# SIB.add_attachment(
+#     "https://static.wikia.nocookie.net/joke-battles/images/d/d4/What-is-a-computer-virus-"
+#     "a82f9491ad3644b89446d45233b57761.jpg/revision/latest?cb=20201129021158")
+# SIB.set_quantity(5)
+# SIB.set_wall_id(267316514)
+# SIB.set_wall_sec(379179453)
+# SIB.start()

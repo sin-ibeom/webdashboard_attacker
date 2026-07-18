@@ -1,0 +1,2 @@
+INSERT INTO account(NAME, PASSWORD)
+    VALUE("ADMIN", "1214")
