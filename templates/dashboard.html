@@ -11,7 +11,7 @@
   </style>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>패들렛 대시보드</title>
   <script type="module" crossorigin src="{{ url_for('static', filename='dashboard/assets/2.js') }}"></script>
   <link rel="stylesheet" crossorigin href="{{ url_for('static', filename='dashboard/assets/index-yGgP3z9Z.css') }}">
 </head>
@@ -34,6 +34,13 @@
               id="logoutDropdown"
               class="hidden absolute right-0 mt-2 w-40 bg-white border border-blue-100 rounded-xl shadow-lg py-1 z-50 transition-all duration-200"
       >
+
+        <button
+                id="infoBtn"
+                class="w-full text-left px-4 py-2.5 text-sm text-blue-600 font-semibold hover:bg-blue-50 transition cursor-pointer"
+        >
+          프로필
+        </button>
         <button
                 id="logoutBtn"
                 class="w-full text-left px-4 py-2.5 text-sm text-blue-600 font-semibold hover:bg-blue-50 transition cursor-pointer"
@@ -91,7 +98,7 @@
       </div>
 
       <div class="border-t border-slate-100 pt-6">
-        <label class="block text-sm font-semibold text-slate-600 mb-2">Output (실행 결과)</label>
+        <label class="block text-sm font-semibold text-slate-600 mb-2">실행 결과</label>
         <div class="output_log w-full h-32 bg-blue-50/30 border border-blue-100 rounded-xl p-4 font-mono text-sm text-blue-900 overflow-y-auto leading-relaxed">
           <p>&gt; 시스템 준비 완료...</p>
           <p class="text-slate-400">&gt; URL 입력을 기다리는 중입니다.</p>
@@ -165,6 +172,16 @@
   document.getElementById('logoutBtn').addEventListener('click', () => {
     window.location.href = "login"
     fetch('/logout', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      }
+                  })
+  });
+
+  document.getElementById('infoBtn').addEventListener('click', () => {
+    window.location.href = "profile"
+    fetch('/profile', {
                       method: 'POST',
                       headers: {
                           'Content-Type': 'application/json'

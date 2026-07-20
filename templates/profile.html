@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/profile/index.css">
+    <title>프로필 정보</title>
+    <script src="https://code.jquery.com/jquery-4.0.0.js" integrity="sha256-9fsHeVnKBvqh3FB2HYu7g2xseAZ5MlN6Kz/qnkASV8U=" crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=M+PLUS+U:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background">
+
+        <!-- left - right -->
+        <div class="left">
+            <div class="left_bar"></div>
+        </div>
+        <div class="right">
+            <div class="top">
+                <div class="left_top">
+                    <div class="name">안녕하세요, USERNAME</div>
+                    <div class="date">DATE</div>
+                </div>
+                <div class="right_top">
+                    <div class="right_top_wrapper">
+                        <div class="profile_btn">
+                            <div class="hide_profile_btn">
+                                <div class="info_profile">프로필</div>
+                                <div class="logout">로그아웃</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="main">
+                <div class="info">
+                    <div class="main_info">
+                        <div class="info_left">
+                            <div class="profile_wrapper">
+                                <div class="profile_inner">
+                                    <div class="profile_img">
+                                    </div>
+                                    <div class="text_info">
+                                        <div class="rank_info">Free</div>
+                                        <div class="email_info">OOOOO@gmail.com</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="edit_wrapper">
+                            </div>
+                        </div>
+                        <div class="info_right">
+                            <div class="edit_btn_wrapper">
+                                <div class="btn_wrapper">
+                                    <div class="edit_btn">EDIT</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</body>
+
+<script>
+    const today = new Date();
+
+    const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long'
+    };
+
+    console.log();
+    $('.date').text(today.toLocaleDateString('ko-KR', options));
+
+</script>
+</html>

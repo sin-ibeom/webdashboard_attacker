@@ -92,9 +92,9 @@ def get_data():
     if re.match(pattern, req_data["url"]):
         url = req_data["url"]
 
-        result = extract_padlet_ids_final(url)
+        result = search_padlet_id(url)
 
-        sec_dict = run_search(result["wall_id"])
+        sec_dict = search_section_title(result["wall_id"])
 
         session["MAIN_ID"] = result["wall_id"]
 
@@ -132,7 +132,7 @@ def start_attack():
         SIB.set_wall_id(int(MAIN_ID))
         for i in SECTION_ID:
             SIB.set_wall_sec(int(i))
-            for mss in SIB.start():
+            for mss in SIB.run_attack():
                 print(f"실시간 전송 상황: {mss}")
 
     else :
@@ -147,6 +147,14 @@ def logout():
 @app.route('/get_message', methods=['GET', 'POST'])
 def get_message():
     return jsonify(msg)
+
+@app.route('/profile', methods=['GET', 'POST'])
+def profile():
+
+
+
+
+    return {"status" : 204}
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080, host='0.0.0.0')
