@@ -2,7 +2,7 @@ import os
 import requests
 
 
-def run_search(wall_id):  # hashid 대신 wall_id를 받습니다.
+def search_section_title(wall_id):  # hashid 대신 wall_id를 받습니다.
     headers = {
         "Authorization": os.environ.get('TOKEN'),
         "Accept": "application/vnd.api+json",

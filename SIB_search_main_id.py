@@ -3,7 +3,7 @@ import json
 import re
 
 
-def extract_padlet_ids_final(padlet_url):
+def search_padlet_id(padlet_url):
     padlet_url = re.sub(r'^https?://+:?//?', 'https://', padlet_url)
     padlet_url = re.sub(r'^(https?):/{3,}', r'\1://', padlet_url)
 
@@ -69,6 +69,7 @@ def extract_padlet_ids_final(padlet_url):
     except requests.exceptions.RequestException as e:
         print(f"[요청 에러] {str(e)}")
         return None
+
     except Exception as e:
         print(f"[에러 발생] {str(e)}")
         return None

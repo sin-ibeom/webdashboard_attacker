@@ -63,21 +63,10 @@ class SIB:
         return cls.__QUANTITY
 
     @classmethod
-    def start(cls):
+    def run_attack(cls):
         if "wall_id" not in cls.__DATA.keys():
             raise ConnectionError("no wall_id found")
         for i in range(cls.__QUANTITY):
-            # SIB.add_subject(f"Продам машиноместо N{str(i + 1)}")
-            # SIB.add_body(f"{random.randint(200, 1000)}$")
             message = str(i+1) + "/" + str(cls.__QUANTITY)
             requests.post(cls.url, headers=cls.get_headers(), data=cls.get_data())
             yield message
-
-
-# SIB.add_attachment(
-#     "https://static.wikia.nocookie.net/joke-battles/images/d/d4/What-is-a-computer-virus-"
-#     "a82f9491ad3644b89446d45233b57761.jpg/revision/latest?cb=20201129021158")
-# SIB.set_quantity(5)
-# SIB.set_wall_id(267316514)
-# SIB.set_wall_sec(379179453)
-# SIB.start()
